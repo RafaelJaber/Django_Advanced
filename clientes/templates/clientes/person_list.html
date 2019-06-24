@@ -1,0 +1,6 @@
+{% for person in object_list %}
+    <a href="{% url 'persons_detail' person.pk %}">
+        {{ person }}
+    </a>
+    <br/>
+{% endfor %}
