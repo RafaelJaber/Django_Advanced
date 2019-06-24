@@ -78,11 +78,21 @@ WSGI_APPLICATION = 'gestao_clientes.wsgi.application'
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
 default_dburl = 'sqlite:///' + os.path.join(BASE_DIR, 'db.sqlite3')
-
+"""
 DATABASES = {
     'default': config('DATABASE_URL', default=default_dburl, cast=dburl),
 }
-
+"""
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'db_django_advanced',
+        'USER': config('USER_SQL'),
+        'PASSWORD': config('PASS_SQL'),
+        'HOST': config('SERVER_SQL'),   # Or an IP Address that your DB is hosted on
+        'PORT': config('PORT_SQL'),
+    }
+}
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
 
