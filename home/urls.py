@@ -6,3 +6,5 @@ urlpatterns = [
     path('logout/', my_logout, name="logout"),
     path('home2/', HomePageTemplateView.as_view(), name="logout"),
 ]
+
+
