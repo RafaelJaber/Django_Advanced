@@ -4,5 +4,7 @@
     Sobrenome: {{ object.last_name }} <br/>
     Idade: {{ object.age }} <br/>
     Bio: {{ object.bio|linebreaksbr }} <br/>
+    <a href="{% url 'persons_update' object.pk %}">Atualizar</a> <br/>
+    <a href="{% url 'persons_delete' object.pk %}">Deletar</a>
 </p>
 <p>Acesso em: <time>{{ date }}</time></p>
