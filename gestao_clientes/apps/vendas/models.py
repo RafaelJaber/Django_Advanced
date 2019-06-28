@@ -4,6 +4,7 @@ from gestao_clientes.apps.produtos.models import Product
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.db.models import Sum, F, FloatField, Max
+from .managers import SaleManager
 
 
 class Sale(models.Model):
@@ -13,6 +14,8 @@ class Sale(models.Model):
     taxes = models.DecimalField(max_digits=5, decimal_places=2, verbose_name='Impostos R$', default=0)
     person = models.ForeignKey(Person, null=True, blank=True, on_delete=models.PROTECT, verbose_name='Cliente')
     nfe_issued = models.BooleanField(default=False, blank=True)
+
+    objects = SaleManager()
 
     def __str__(self):
         return self.number
