@@ -45,8 +45,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'bootstrapform',
-    'clientes',
-    'home',
+    'gestao_clientes.apps.clientes',
+    'gestao_clientes.apps.home',
+    'gestao_clientes.apps.produtos',
+    'gestao_clientes.apps.vendas',
     'debug_toolbar'
 ]
 

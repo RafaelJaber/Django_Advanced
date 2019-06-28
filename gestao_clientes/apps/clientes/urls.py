@@ -9,7 +9,6 @@ from .views import PersonDetail
 from .views import PersonCreate
 from .views import PersonUpdate
 from .views import PersonDelete
-from .views import ProductBulk
 from .views import persons_list2
 
 
@@ -24,5 +23,4 @@ urlpatterns = [
     path('person-new/', PersonCreate.as_view(), name="persons_create"),
     path('person-update/<int:pk>/', PersonUpdate.as_view(), name="persons_update"),
     path('person-delete/<int:pk>/', PersonDelete.as_view(), name="persons_delete"),
-    path('person-bulk/', ProductBulk.as_view(), name="persons_delete")
 ]
