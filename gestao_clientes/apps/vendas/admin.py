@@ -1,7 +1,7 @@
 from django.contrib import admin
 from .models import Sale
 from .actions import *
-from gestao_clientes.apps.produtos.models import OrderItem
+from .models import OrderItem
 
 
 class OrderItemInline(admin.TabularInline):
@@ -15,7 +15,7 @@ class SaleAdmin(admin.ModelAdmin):
     actions = [nfe_emitida, nfe_cancelada]
     #raw_id_fields = ('person', )
     autocomplete_fields = ['person']
-    list_display = ('number', 'discount', 'person', 'nfe_issued')
+    list_display = ('number', 'discount', 'person', 'value', 'nfe_issued')
     search_fields = ('number', 'person__first_name', 'person__doc__num_doc')
     fieldsets = (
         ('Dados Venda', {'fields': (
@@ -31,3 +31,4 @@ class SaleAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Sale, SaleAdmin)
+admin.site.register(OrderItem)
