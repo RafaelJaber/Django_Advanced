@@ -32,6 +32,9 @@ class Sale(models.Model):
         verbose_name = 'Venda'
         verbose_name_plural = 'Vendas'
         ordering = ['number']
+        permissions = (
+            ('setar_nfe', 'Usuário pode alterar parametro NF-e'),
+        )
 
 
 class OrderItem(models.Model):
