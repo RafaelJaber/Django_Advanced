@@ -9,6 +9,7 @@ from django.utils import timezone
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from gestao_clientes.apps.vendas.models import Sale
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 decorators = [login_required]
 
 
@@ -70,12 +71,13 @@ def persons_delete(request, id):
     return render(request, 'person_delete_confirm.html', {'person': person, 'footer_message': footer_message})
 
 
-class PersonList(ListView):
+class PersonList(LoginRequiredMixin, ListView):
     model = Person
 
 
-@method_decorator(login_required, name='dispatch')
-class PersonDetail(DetailView):
+class PersonDetail(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
+    permission_required = 'clientes.list_clients'
+    permission_denied_message = 'Seu acesso não é autorizado'
     model = Person
     template_name = 'clientes/person_detail.html'
 
@@ -87,7 +89,7 @@ class PersonDetail(DetailView):
         context = super().get_context_data(**kwargs)
         context['now'] = timezone.now()
         context['sales'] = Sale.objects.filter(
-            pessoa_id=self.object.id
+            person_id=self.object.id
         )
 
         return context

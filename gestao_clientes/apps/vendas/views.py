@@ -1,5 +1,4 @@
 import json
-from django.core import serializers
 from django.shortcuts import render, HttpResponse
 from django.views.generic import View
 from .models import Sale, OrderItem

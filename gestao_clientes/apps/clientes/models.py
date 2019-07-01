@@ -26,5 +26,8 @@ class Person(models.Model):
         verbose_name = 'Pessoa'
         verbose_name_plural = 'Pessoas'
         ordering = ['first_name']
+        permissions = (
+            ('list_clients', 'Usuário que pode ver a lista de clientes'),
+        )
 
 
