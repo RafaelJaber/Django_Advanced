@@ -1,4 +1,6 @@
-from django.shortcuts import render
+import json
+from django.core import serializers
+from django.shortcuts import render, HttpResponse
 from django.views.generic import View
 from .models import Sale, OrderItem
 
@@ -14,4 +16,26 @@ class DashboardView(View):
         context['count'] = Sale.objects.count_id()
         context['count_nf_submit'] = Sale.objects.count_nf_submit()
         template = 'vendas/dashboard.html'
+
+
+        context['x'] = ['x', 1,2,3,4,5,6]
+        context['vanda'] = ['Venda', 30, 200, 100, 400, 150, 250]
+        context['data2'] = ['data2', 50, 20, 10, 40, 15, 25]
         return render(request, template, context)
+
+
+class JsonView(View):
+
+    def get(self, request):
+        x = []
+        venda = []
+        for sale in Sale.objects.all():
+            x.append(str(sale.number))
+            venda.append(float(sale.value))
+
+        dict = {
+            'x': x,
+            'Venda': venda
+        }
+        json_object = json.dumps(dict)
+        return HttpResponse(json_object)

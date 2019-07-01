@@ -21,3 +21,5 @@ class SaleManager(models.Manager):
 
     def count_nf_submit(self):
         return self.filter(nfe_issued=True).aggregate(Count('id'))['id__count']
+
+
