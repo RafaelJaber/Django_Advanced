@@ -8,7 +8,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.utils import timezone
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
-
+from gestao_clientes.apps.vendas.models import Sale
 decorators = [login_required]
 
 
@@ -27,7 +27,7 @@ def persons_list2(request, pk):
     template = 'clientes/person_detail.html'
     context['object'] = person
     context['now'] = timezone.now()
-    context['sales'] = Venda.objects.filter(
+    context['sales'] = Sale.objects.filter(
         pessoa_id=pk
     )
     return render(request, template, context)
@@ -35,6 +35,8 @@ def persons_list2(request, pk):
 
 @login_required
 def persons_new(request):
+    if not request.user.has_perm('clientes.add_person'):
+        return HttpResponse('Não autorizado')
     form = PersonForm(request.POST or None, request.FILES or None)
     footer_message = 'Desenvolvimento web com Django 2.x'
 
@@ -84,7 +86,7 @@ class PersonDetail(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['now'] = timezone.now()
-        context['sales'] = Venda.objects.filter(
+        context['sales'] = Sale.objects.filter(
             pessoa_id=self.object.id
         )
 
