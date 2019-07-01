@@ -7,6 +7,11 @@ from .models import Sale, OrderItem
 
 class DashboardView(View):
 
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.has_perm('vendas.ver_dash'):
+            return HttpResponse('Acesso negado')
+        return super(DashboardView, self).dispatch(request, *args, **kwargs)
+
     def get(self, request):
         context = {}
         context['average'] = Sale.objects.average()

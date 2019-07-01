@@ -34,6 +34,7 @@ class Sale(models.Model):
         ordering = ['number']
         permissions = (
             ('setar_nfe', 'Usuário pode alterar parametro NF-e'),
+            ('ver_dash', 'Usuário que podem acessar a dashboard'),
         )
 
 
