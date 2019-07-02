@@ -74,6 +74,18 @@ def persons_delete(request, id):
 class PersonList(LoginRequiredMixin, ListView):
     model = Person
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        primeiro_acesso = self.request.session.get('primeiro_acesso', False)
+
+        if not primeiro_acesso:
+            context['message'] = 'Seja bem vindo ao seu primeiro acesso hoje'
+            self.request.session['primeiro_acesso'] = True
+        else:
+            context['message'] = 'Já teve acesso'
+        return context
+
 
 class PersonDetail(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
     permission_required = 'clientes.list_clients'
