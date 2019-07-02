@@ -156,6 +156,13 @@ STATICFILES_DIRS = [
 
 STATIC_URL = '/static/'
 
+DEFAULT_FROM_EMAIL = 'Django <rafaeljaber22@gmail.com>'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'rafaeljaber22@gmail.com'
+EMAIL_HOST_PASSWORD = 'rafael1998'
+EMAIL_PORT = 587
+
 # AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
 # AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
 # AWS_STORAGE_BUCKET_NAME = 'gestao-clientes'
