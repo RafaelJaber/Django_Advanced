@@ -1,6 +1,6 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, HttpResponse
 from django.contrib.auth import logout
-from django.views.generic.base import TemplateView
+from django.views.generic.base import TemplateView, View
 
 
 # TODO: Refatorar para usar threads assim que possivel
@@ -21,3 +21,12 @@ class HomePageTemplateView(TemplateView):
         context = super().get_context_data(**kwargs)
         context['minha_variavel'] = 'Olá está é uma linda variável que quer te atolar'
         return context
+
+
+class MyView(View):
+
+    def get(self, request, *args, **kwargs):
+        return render(request, 'home3.html')
+
+    def post(self, request, *args, **kwargs):
+        return HttpResponse('POST Maluco')
