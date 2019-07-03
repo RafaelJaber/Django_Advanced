@@ -1,6 +1,5 @@
 from django.db import models
-from django.db.models.signals import m2m_changed
-from django.dispatch import receiver
+from django.core.mail import send_mail
 
 
 class Documento(models.Model):
@@ -21,6 +20,17 @@ class Person(models.Model):
 
     def __str__(self):
         return self.first_name + ' ' + self.last_name
+
+    def save(self, *args, **kwargs):
+        super(Person, self).save(*args, **kwargs)
+
+        send_mail(
+            'Cliente Cadastrado',
+            'O cliente %s foi cadastrado' % self.first_name,
+            'django@django.com',
+            ['rafael.jaber@gmail.com'],
+            fail_silently=False
+        )
 
     class Meta:
         verbose_name = 'Pessoa'
