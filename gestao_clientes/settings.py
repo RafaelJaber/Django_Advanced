@@ -174,13 +174,13 @@ STATICFILES_DIRS = [
 
 STATIC_URL = '/static/'
 
-DEFAULT_FROM_EMAIL = 'Django <rafaeljaber22@gmail.com>'
-EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'rafaeljaber22@gmail.com'
-EMAIL_HOST_PASSWORD = 'rafael1998'
-EMAIL_PORT = 587
-SERVER_EMAIL = 'sistema@django-advanced.com'
+DEFAULT_FROM_EMAIL = config('FROM_EMAIL')
+EMAIL_USE_TLS = config('EMAIL_TLS')
+EMAIL_HOST = config('EMAIL_HOST')
+EMAIL_HOST_USER = config('EMAIL_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_PASS')
+EMAIL_PORT = config('EMAIL_PORT')
+SERVER_EMAIL = config('SYSTEM_EMAIL')
 
 # AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
 # AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
