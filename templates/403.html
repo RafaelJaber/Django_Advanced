@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block main %}
+    <h1>Sem permissão</h1>
+
+    <p>Que feio acessando algo que não pode</p>
+
+    {{ request_path }}<br/>
+    {{ exception }}
+{% endblock %}
