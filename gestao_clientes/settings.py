@@ -53,6 +53,8 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.facebook',
+    'allauth.socialaccount.providers.twitter',
+    'allauth.socialaccount.providers.google',
     'gestao_clientes.apps.clientes',
     'gestao_clientes.apps.home',
     'gestao_clientes.apps.produtos',
