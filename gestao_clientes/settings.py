@@ -114,7 +114,7 @@ DATABASES = {
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'db_django_advanced',
+        'NAME': config('DB_NAME'),
         'USER': config('USER_SQL'),
         'PASSWORD': config('PASS_SQL'),
         'HOST': config('SERVER_SQL'),   # Or an IP Address that your DB is hosted on
