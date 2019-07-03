@@ -1,5 +1,5 @@
 from django.db import models
-from django.core.mail import send_mail
+from django.core.mail import send_mail, mail_admins
 from django.template.loader import render_to_string
 
 class Documento(models.Model):
@@ -32,6 +32,12 @@ class Person(models.Model):
             plain_text,
             'django@django.com',
             ['rafael.jaber@gmail.com'],
+            html_message=html_email,
+            fail_silently=False
+        )
+        mail_admins(
+            plain_text,
+            'django@django.com',
             html_message=html_email,
             fail_silently=False
         )

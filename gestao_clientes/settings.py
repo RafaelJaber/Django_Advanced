@@ -35,6 +35,9 @@ DEBUG_TOOLBAR_CONFIG = {
         'INTERCEPT_REDIRECTS': True,
     }
 
+# Admins
+ADMINS = [('Rafael', 'rafael.jaber@hotmail.com'),]
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -163,6 +166,7 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'rafaeljaber22@gmail.com'
 EMAIL_HOST_PASSWORD = 'rafael1998'
 EMAIL_PORT = 587
+SERVER_EMAIL = 'sistema@django-advanced.com'
 
 # AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
 # AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
