@@ -27,7 +27,7 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['gestao-clientes2.herokuapp.com', 'localhost']
+ALLOWED_HOSTS = ['rafael-jaber-django-1.herokuapp.com', 'localhost']
 
 INTERNAL_IPS = ['localhost', '127.0.0.1']
 
