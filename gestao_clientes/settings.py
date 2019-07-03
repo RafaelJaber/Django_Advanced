@@ -43,17 +43,23 @@ ADMINS = [('Rafael', 'rafael.jaber@hotmail.com'),]
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
+    'django.contrib.sites',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'bootstrapform',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
     'gestao_clientes.apps.clientes',
     'gestao_clientes.apps.home',
     'gestao_clientes.apps.produtos',
     'gestao_clientes.apps.vendas',
     'debug_toolbar'
 ]
+
+SITE_ID = 1
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -84,6 +90,11 @@ TEMPLATES = [
         },
     },
 ]
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
 
 WSGI_APPLICATION = 'gestao_clientes.wsgi.application'
 
