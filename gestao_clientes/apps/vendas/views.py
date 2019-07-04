@@ -1,8 +1,13 @@
 import json
 from django.shortcuts import render, HttpResponse
-from django.views.generic import View
+from django.views.generic import View, ListView
 from .models import Sale, OrderItem
 from .forms import OrderItemForm
+
+
+class ListSales(ListView):
+    model = Sale
+    template_name = 'vendas/list_sales.html'
 
 
 class NewOrder(View):

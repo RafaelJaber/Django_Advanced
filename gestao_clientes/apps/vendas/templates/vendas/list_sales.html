@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block main %}
+    <h1>Listagem de Vendas</h1> <br/>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Número</th>
+              <th scope="col">Desconto</th>
+              <th scope="col">Valor</th>
+              <th scope="col" style="text-align: center">Ação</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for sale in object_list %}
+                <tr>
+                    <td>{{ sale.id }}</td>
+                    <td>{{ sale.number }}</td>
+                    <td>{{ sale.discount }}</td>
+                    <td>{{ sale.value }}</td>
+                    <td>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <a href="{% url 'new-order-item' sale.id %}">
+                                    <i class="material-icons">edit</i>
+                                </a>
+                            </div>
+                            <div class="col-md-6">
+                                <i class="material-icons">delete</i>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

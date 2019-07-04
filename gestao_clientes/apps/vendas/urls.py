@@ -1,8 +1,9 @@
 from django.conf import settings
 from django.urls import path
-from .views import DashboardView, JsonView, NewOrder, NewOrderItem
+from .views import DashboardView, JsonView, NewOrder, NewOrderItem, ListSales
 
 urlpatterns = [
+    path('', ListSales.as_view(), name="list-sales"),
     path('novo-pedido/', NewOrder.as_view(), name="new-order"),
     path('novo-item-pedido/<int:sale>', NewOrderItem.as_view(), name="new-order-item"),
     path('dashboard/', DashboardView.as_view(), name="dashboard"),
