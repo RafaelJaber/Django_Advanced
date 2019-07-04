@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block main %}
+    <a href="{% url 'list-sales' %}">Voltar</a>
     <h1>Novo Pedido</h1>
 
     <form method="POST" action="{% url 'new-order' %}">

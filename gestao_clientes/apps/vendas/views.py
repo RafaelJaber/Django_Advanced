@@ -1,5 +1,5 @@
 import json
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render, HttpResponse, get_object_or_404
 from django.views.generic import View, ListView
 from .models import Sale, OrderItem
 from .forms import OrderItemForm
@@ -18,7 +18,7 @@ class NewOrder(View):
     def post(self, request):
         data = {}
         data['numero'] = int(request.POST['numero'])
-        data['desconto'] = float(request.POST['desconto'])
+        data['desconto'] = float(request.POST['desconto'].replace(',', '.'))
         data['venda'] = request.POST['venda_id']
 
         if data['venda']:
@@ -61,6 +61,22 @@ class NewOrderItem(View):
 
         return render(
             request, 'vendas/new-order.html', data
+        )
+
+
+class EditSale(View):
+    def get(self, request, sale):
+        sale = get_object_or_404(Sale, id=sale)
+        data = {}
+        data['form_item'] = OrderItemForm()
+        data['numero'] = sale.number
+        data['desconto'] = float(sale.discount)
+        data['venda'] = sale.id
+        data['venda_obj'] = sale
+        data['itens'] = sale.orderitem_set.all()
+
+        return render(
+            request,  'vendas/new-order.html', data
         )
 
 
