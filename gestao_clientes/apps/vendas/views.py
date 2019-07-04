@@ -38,7 +38,7 @@ class NewOrder(View):
 
 class NewOrderItem(View):
     def get(self, request, pk):
-        return HttpResponse('Gregory burro')
+        return HttpResponse('Rafael Dando Manota')
 
     def post(self, request, sale):
         data = {}
