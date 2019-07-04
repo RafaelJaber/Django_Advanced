@@ -1,5 +1,5 @@
 import json
-from django.shortcuts import render, HttpResponse, get_object_or_404
+from django.shortcuts import render, HttpResponse, get_object_or_404, redirect
 from django.views.generic import View, ListView
 from .models import Sale, OrderItem
 from .forms import OrderItemForm
@@ -78,6 +78,22 @@ class EditSale(View):
         return render(
             request,  'vendas/new-order.html', data
         )
+
+
+class DeleteSale(View):
+    def get(self, request, sale):
+        delete = get_object_or_404(Sale, id=sale)
+        if delete:
+            delete.delete()
+        return redirect('list-sales')
+
+
+class DeleteOrder(View):
+    def get(self, request, order):
+        order = get_object_or_404(OrderItem, id=order)
+        if order:
+            order.delete()
+        return redirect('new-order')
 
 
 class DashboardView(View):

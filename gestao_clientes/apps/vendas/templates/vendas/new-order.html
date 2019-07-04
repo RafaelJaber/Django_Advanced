@@ -31,6 +31,7 @@
                     <th scope="col">Descrição</th>
                     <th scope="col">Quantidade</th>
                     <th scope="col">Desconto</th>
+                    <th scope="col">Ação</th>
                 </tr>
             </thead>
             <tbody>
@@ -40,9 +41,34 @@
                         <td>{{ item.product.description }}</td>
                         <td>{{ item.quantities }}</td>
                         <td>{{ item.discount }}</td>
+                        <td><a onclick="deleteOrder({{ item.id }}, '{{ item.product.description }}')">
+                            <i class="material-icons">delete</i>
+                        </a></td>
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
     {% endif %}
+{% endblock %}
+
+{% block content %}
+    <script type="text/javascript">
+        function deleteOrder(order, item) {
+            let conf = confirm('Deseja deletar o item: ' + item);
+            if (conf) {
+                ajaxDeleteOrder(order)
+            }
+        }
+        function ajaxDeleteOrder(order) {
+            let django_url = 'http://localhost:8000/vendas/deletar-order';
+            let complete_url = django_url + '/' + order;
+            $.ajax({
+                url: complete_url,
+                type: 'GET',
+                success: function () {
+                    location.reload();
+                }
+            });
+        }
+    </script>
 {% endblock %}

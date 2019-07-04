@@ -27,7 +27,9 @@
                                 </a>
                             </div>
                             <div class="col-md-6">
-                                <i class="material-icons">delete</i>
+                                <a onclick="deleteSale({{ sale.id }})">
+                                    <i class="material-icons">delete</i>
+                                </a>
                             </div>
                         </div>
                     </td>
@@ -35,4 +37,25 @@
             {% endfor %}
         </tbody>
     </table>
+{% endblock %}
+{% block content %}
+    <script type="text/javascript">
+        function deleteSale(sale) {
+            let confir = confirm('Tem certeza que deseja deletar a venda: ' + sale);
+            if (confir) {
+                jqueryRedirect(sale)
+            }
+        }
+        function jqueryRedirect(sale) {
+            let django_url = 'http://localhost:8000/vendas/deletar-venda';
+            let complete_url = django_url + '/' + sale;
+            $.ajax({
+                url: complete_url,
+                type: 'GET',
+                success: function () {
+                    location.reload(true);
+                }
+            });
+        }
+    </script>
 {% endblock %}
