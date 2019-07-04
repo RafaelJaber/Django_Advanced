@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load bootstrap %}
 {% block main %}
     <a href="{% url 'list-sales' %}">Voltar</a>
     <h1>Novo Pedido</h1>
@@ -20,7 +20,7 @@
     {% if venda_obj %}
         <form action="{% url 'new-order-item' venda_obj.id %}" method="POST">
             {% csrf_token %}
-            {{ form_item }}
+            {{ form_item|bootstrap }}
             <button class="btn btn-info">Incluir</button>
         </form>
         <h2>Listagem de itens</h2>
