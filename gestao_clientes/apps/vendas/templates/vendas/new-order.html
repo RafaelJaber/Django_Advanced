@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block main %}
+    <h1>Novo Pedido</h1>
+
+    <form method="POST" action="{% url 'new-order' %}">
+        {% csrf_token %}
+        <h3>Cabeçalho Pedido número: {{ venda_obj.number }}</h3>
+        <label for="id-number">Número</label><br/>
+        <input type="number" name="numero" id="id-number" class="form-control" value="{{ venda_obj.number }}"><br/>
+        <label for="id-discount">Desconto</label><br/>
+        <input type="text" name="desconto" id="id-discount" class="form-control" value="{{ venda_obj.discount }}"><br/>
+        <input type="hidden" value="{{ venda.obj.id }}" name="venda_id">
+        <input type="submit" value="Enviar">
+    </form>
+{% endblock %}
+
+{% block extra %}
+    {% if venda_obj %}
+        <form action="{% url 'new-order-item' venda_obj.id %}" method="POST">
+            {% csrf_token %}
+            {{ form_item }}
+            <button class="btn btn-info">Incluir</button>
+        </form>
+        <h2>Listagem de itens</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Descrição</th>
+                    <th scope="col">Quantidade</th>
+                    <th scope="col">Desconto</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in itens %}
+                    <tr>
+                        <td>{{ item.id }}</td>
+                        <td>{{ item.product.description }}</td>
+                        <td>{{ item.quantities }}</td>
+                        <td>{{ item.discount }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+{% endblock %}

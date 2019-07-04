@@ -2,6 +2,61 @@ import json
 from django.shortcuts import render, HttpResponse
 from django.views.generic import View
 from .models import Sale, OrderItem
+from .forms import OrderItemForm
+
+
+class NewOrder(View):
+    def get(self, request):
+        template = 'vendas/new-order.html'
+        return render(request, template)
+
+    def post(self, request):
+        data = {}
+        data['numero'] = int(request.POST['numero'])
+        data['desconto'] = float(request.POST['desconto'])
+        data['venda'] = request.POST['venda_id']
+
+        if data['venda']:
+            venda = Sale.objects.get(id=data['venda'])
+            venda.discount = data['desconto']
+            venda.number = data['numero']
+            venda.save()
+        else:
+            venda = Sale.objects.create(
+                number=data['numero'],
+                discount=data['desconto']
+            )
+
+        itens = venda.orderitem_set.all()
+        data['venda_obj'] = venda
+        data['itens'] = itens
+        data['form_item'] = OrderItemForm()
+
+        template = 'vendas/new-order.html'
+        return render(request, template, data)
+
+
+class NewOrderItem(View):
+    def get(self, request, pk):
+        return HttpResponse('Gregory burro')
+
+    def post(self, request, sale):
+        data = {}
+        item = OrderItem.objects.create(
+            product_id=request.POST['product_id'], quantities=request.POST['quantity'],
+            discount=request.POST['discount'], sale_id=sale
+        )
+        data['item'] = item
+        data['form_item'] = OrderItemForm()
+        data['numero'] = item.sale.number
+        data['desconto'] = item.sale.discount
+        data['venda'] = item.sale.id
+        data['venda_obj'] = item.sale
+        data['itens'] = item.sale.orderitem_set.all()
+
+        return render(
+            request, 'vendas/new-order.html', data
+        )
 
 
 class DashboardView(View):
