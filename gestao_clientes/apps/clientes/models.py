@@ -2,6 +2,7 @@ from django.db import models
 from django.core.mail import send_mail, mail_admins
 from django.template.loader import render_to_string
 
+
 class Documento(models.Model):
     num_doc = models.CharField(max_length=50)
 

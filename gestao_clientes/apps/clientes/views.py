@@ -5,6 +5,7 @@ from .forms import PersonForm
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic import View
 from django.utils import timezone
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
@@ -117,13 +118,25 @@ class PersonCreate(CreateView):
 class PersonUpdate(UpdateView):
     model = Person
     fields = ['first_name', 'last_name', 'age', 'salary', 'bio', 'photo']
-
     success_url = reverse_lazy('persons_list')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['update'] = True
+        return context
 
 
 class PersonDelete(DeleteView):
     model = Person
 
     success_url = reverse_lazy('persons_list')
+
+
+class DeletePerson(View):
+    def get(self, request, pk):
+        person = get_object_or_404(Person, id=pk)
+        if person:
+            person.delete()
+        return redirect('persons_list')
 
 

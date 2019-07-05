@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'bootstrapform',
+    'materializecssform',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -117,7 +118,7 @@ DATABASES = {
         'NAME': config('DB_NAME'),
         'USER': config('USER_SQL'),
         'PASSWORD': config('PASS_SQL'),
-        'HOST': config('SERVER_SQL'),   # Or an IP Address that your DB is hosted on
+        'HOST': config('SERVER_SQL'),
         'PORT': config('PORT_SQL'),
     }
 }

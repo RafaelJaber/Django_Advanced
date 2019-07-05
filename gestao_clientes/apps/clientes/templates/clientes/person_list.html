@@ -5,11 +5,99 @@
 {% endblock %}
 
 {% block main %}
-{% for person in object_list %}
-    <a href="{% url 'persons_detail' person.pk %}">
-        {{ person }}
-    </a>
-    <br/>
-{% endfor %}
-<br/>
+    <table class="responsive-table centered">
+        <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Nome</th>
+              <th scope="col">Sobrenome</th>
+              <th scope="col">Idade</th>
+              <th scope="col" style="text-align: center; width: 30%">Ação</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for person in object_list %}
+                <tr>
+                    <td>{{ person.id }}</td>
+                    <td>{{ person.first_name }}</td>
+                    <td>{{ person.last_name }}</td>
+                    <td>{{ person.age }}</td>
+                    <td>
+                        <div class="row">
+                            <div class="col s3"></div>
+                            <div class="col s2">
+                                <a href="{% url 'persons_detail' person.pk %}">
+                                    <i class="material-icons">search</i>
+                                </a>
+                            </div>
+                            <div class="col s2">
+                                <a href="{% url 'persons_update' person.pk %}">
+                                    <i class="material-icons">edit</i>
+                                </a>
+                            </div>
+                            <div class="col s2">
+                                <a onclick="deleteClient({{ person.id }}, '{{ person.first_name }}')" style="color: red">
+                                    <i class="material-icons">delete</i>
+                                </a>
+                            </div>
+                            <div class="col s3"></div>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a class="btn-floating btn-large waves-effect waves-light red"
+       style="position: fixed; bottom: 10px; right: 10px"
+       href="{% url 'persons_create' %}"
+    ><i class="material-icons">add</i></a>
+{% endblock %}
+
+
+{% block modals %}
+    <div id="modal1" class="modal">
+        <div class="modal-content" style="padding: 0">
+            <div style="background: #EE6E73; color: #ffffff; padding: 24px; text-align: center">
+                <h4 style="margin: 0;">Atenção</h4>
+            </div>
+            <div style="padding: 24px">
+                <h5>Tem certeza que deseja deletar o cliente: <span id="modal-span"></span>?</h5>
+                <time>Essa operação não poderá ser desfeita</time>
+            </div>
+            <input type="hidden" id="id_client_input">
+        </div>
+        <div class="modal-footer" style="height: auto">
+            <a href="#" class="modal-close waves-effect waves-teal btn" style="background: grey">
+                Cancelar<i class="material-icons right">cancel</i>
+            </a>
+            <a onclick="jqueryRedirect()"
+               class="waves-effect waves-yellow btn" style="background: #F44336">
+                Apagar<i class="material-icons right">delete</i>
+            </a>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        M.AutoInit();
+        function deleteClient(id, name) {
+            $('#modal-span').text(name);
+            $('#id_client_input').val(id);
+            $('#modal1').modal('open');
+        }
+        function jqueryRedirect() {
+            let django_url = 'http://localhost:8000/clientes/cliente-delete';
+            let client = $('#id_client_input').val();
+            let complete_url = django_url + '/' + client;
+            $.ajax({
+                url: complete_url,
+                type: 'GET',
+                success: function () {
+                    $('#modal1').modal('close');
+                    location.reload();
+                }
+            });
+        }
+    </script>
 {% endblock %}

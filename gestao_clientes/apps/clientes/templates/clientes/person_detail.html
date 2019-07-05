@@ -1,26 +1,85 @@
+{% extends 'base_new.html' %}
+{% load static %}
+{% block title_page %}
+    Detalhe Cliente
+{% endblock %}
+{% block main %}
+    <div class="row">
+        <form>
+            <div class="row">
+                <div class="col s6">
+                    <label for="id_first_name">Nome</label>
+                    <input type="text" disabled value="{{ object.first_name }}" id="id_first_name">
+                </div>
+                <div class="col s6">
+                    <label for="id_last_name">Sobrenome</label>
+                    <input type="text" disabled value="{{ object.last_name }}" id="id_last_name">
+                </div>
+            </div>
+             <div class="row">
+                <div class="col s6">
+                    <label for="id_age">Idade</label>
+                    <input type="text" disabled value="{{ object.age }}" id="id_age">
+                </div>
+                <div class="col s6">
+                    <label for="id_salary">Salário</label>
+                    <input type="text" disabled value="{{ object.salary }}" id="id_salary">
+                </div>
+            </div>
+            {% if object.photo %}
+                <div class="row">
+                    <div class="col s3">
+                        <div class="valign-wrapper">
+                            <p>Foto:</p>
+                        </div>
+                    </div>
+                    <div class="col s9">
+                        <img class="materialboxed" height="250px"
+                             src="{{ object.photo.url }}"
+                             style="margin: 0 auto;"
+                        >
+                    </div>
+                </div>
+            {% endif %}
+        </form>
+    </div>
+    {% if sales %}
+        <div style="border-bottom: 1px solid rgba(0,0,0,0.14); height: 90px">
+            <div class="container">
+                <div class="nav-wrapper">
+                    <div class="row">
+                        <div class="col s12 m10 offset-m1 center">
+                            <h2 style="color: #ee6e73; font-weight: 300; margin-top: 13px">
+                                Vendas
+                            </h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <table class="responsive-table centered">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Número</th>
+                    <th scope="col">Valor</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for sale in sales %}
+                    <tr>
+                        <td>{{ sale.id }}</td>
+                        <td>{{ sale.number }}</td>
+                        <td>{{ sale.value }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+{% endblock %}
 
-
-<body>
-<h1>Person Detail</h1>
-<p>
-    Nome: {{ object.first_name }} <br/>
-    Sobrenome: {{ object.last_name }} <br/>
-    Idade: {{ object.age }} <br/>
-    Bio: {{ object.bio|linebreaksbr }} <br/>
-    Doc: {{ object.doc }}
-</p>
-
-<h2>Vendas</h2>
-{% for sale in sales %}
-    <p>Venda id: {{ sale.id }}</p>
-    <h3>Lista de produtos</h3>
-    <ul>
-        {% for produto in sale.produtos.all %}
-            <li>{{ produto.id }} - {{ produto.descricao }}</li>
-        {% endfor %}
-    </ul>
-{% endfor %}
-
-
-<p>Acesso em: <time>{{ now }}</time></p>
-</body>
+{% block scripts %}
+    <script>
+        M.AutoInit();
+    </script>
+{% endblock %}
