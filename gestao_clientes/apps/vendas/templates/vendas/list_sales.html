@@ -1,8 +1,9 @@
-{% extends 'base.html' %}
-
+{% extends 'base_new.html' %}
+{% block title_page %}
+    Listagem de Vendas
+{% endblock %}
 {% block main %}
-    <h1>Listagem de Vendas</h1> <br/>
-    <table class="table table-hover">
+    <table class="responsive-table centered">
         <thead>
             <tr>
               <th scope="col">ID</th>
@@ -21,39 +22,72 @@
                     <td>{{ sale.value }}</td>
                     <td>
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col s4"></div>
+                            <div class="col s2">
                                 <a href="{% url 'edit-order' sale.id %}">
                                     <i class="material-icons">edit</i>
                                 </a>
                             </div>
-                            <div class="col-md-6">
-                                <a onclick="deleteSale({{ sale.id }})">
+                            <div class="col s2">
+                                <a onclick="deleteSale({{ sale.id }})" style="color: red">
                                     <i class="material-icons">delete</i>
                                 </a>
                             </div>
+                            <div class="col s4"></div>
                         </div>
                     </td>
                 </tr>
             {% endfor %}
         </tbody>
     </table>
+    <a class="btn-floating btn-large waves-effect waves-light red"
+       style="position: fixed; bottom: 10px; right: 10px"
+       href="{% url 'new-order' %}"
+    ><i class="material-icons">add</i></a>
 {% endblock %}
-{% block content %}
-    <script type="text/javascript">
+
+{% block modals %}
+    <div id="modal1" class="modal">
+        <div class="modal-content" style="padding: 0">
+            <div style="background: #EE6E73; color: #ffffff; padding: 24px; text-align: center">
+                <h4 style="margin: 0;">Atenção</h4>
+            </div>
+            <div style="padding: 24px">
+                <h5>Tem certeza que deseja deletar a venda número: <span id="modal-span"></span>?</h5>
+                <time>Essa operação não poderá ser desfeita</time>
+            </div>
+            <input type="hidden" id="id_sale_input">
+        </div>
+        <div class="modal-footer" style="height: auto">
+            <a href="#" class="modal-close waves-effect waves-teal btn-large" style="background: grey">
+                Cancelar<i class="material-icons right">cancel</i>
+            </a>
+            <a onclick="jqueryRedirect()"
+               class="waves-effect waves-yellow btn-large" style="background: #F44336">
+                Apagar<i class="material-icons right">delete</i>
+            </a>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        M.AutoInit();
         function deleteSale(sale) {
-            let confir = confirm('Tem certeza que deseja deletar a venda: ' + sale);
-            if (confir) {
-                jqueryRedirect(sale)
-            }
+            $('#modal-span').text(sale);
+            $('#id_sale_input').val(sale);
+            $('#modal1').modal('open');
         }
-        function jqueryRedirect(sale) {
+        function jqueryRedirect() {
             let django_url = 'http://localhost:8000/vendas/deletar-venda';
+            sale = $('#id_sale_input').val();
             let complete_url = django_url + '/' + sale;
             $.ajax({
                 url: complete_url,
                 type: 'GET',
                 success: function () {
-                    location.reload(true);
+                    $('#modal1').modal('close');
+                    location.reload();
                 }
             });
         }

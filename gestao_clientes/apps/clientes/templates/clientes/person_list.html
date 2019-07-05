@@ -1,3 +1,10 @@
+{% extends 'base_new.html' %}
+
+{% block title_page %}
+    Lista de Clientes
+{% endblock %}
+
+{% block main %}
 {% for person in object_list %}
     <a href="{% url 'persons_detail' person.pk %}">
         {{ person }}
@@ -5,4 +12,4 @@
     <br/>
 {% endfor %}
 <br/>
-{{ message }}
+{% endblock %}

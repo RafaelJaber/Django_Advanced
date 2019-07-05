@@ -1,30 +1,71 @@
-{% extends 'base.html' %}
-{% load bootstrap %}
+{% extends 'base_new.html' %}
+{% block title_page %}
+    Novo Pedido
+{% endblock %}
 {% block main %}
-    <a href="{% url 'list-sales' %}">Voltar</a>
-    <h1>Novo Pedido</h1>
 
-    <form method="POST" action="{% url 'new-order' %}">
-        {% csrf_token %}
-        <h3>Cabeçalho Pedido número: {{ venda_obj.number }}</h3>
-        <label for="id-number">Número</label><br/>
-        <input type="number" name="numero" id="id-number" class="form-control" value="{{ venda_obj.number }}"><br/>
-        <label for="id-discount">Desconto</label><br/>
-        <input type="text" name="desconto" id="id-discount" class="form-control" value="{{ venda_obj.discount }}"><br/>
-        <input type="hidden" value="{{ venda.obj.id }}" name="venda_id">
-        <input type="submit" value="Enviar">
-    </form>
+    <div class="row">
+        <form class="col s12" method="POST" action="{% url 'new-order' %}">
+            {% csrf_token %}
+            <input type="hidden" value="{{ venda.obj.id }}" name="venda_id">
+            <div class="row">
+                <div class="input-field col s6">
+                    <input type="number" name="numero" id="id-number" class="validate" value="{{ venda_obj.number }}">
+                    <label for="id-number">Número</label>
+                </div>
+                <div class="input-field col s6">
+                    <input type="text" name="desconto" id="id-discount" class="validate" value="{{ venda_obj.discount }}">
+                    <label for="id-discount">Desconto</label>
+                </div>
+            </div>
+            <div class="row center">
+                <button class="btn waves-effect waves-light" type="submit" name="action">
+                    {% if not venda_obj %}
+                        Cadastrar
+                    {% else %}
+                        Atualizar
+                    {% endif %}
+                    <i class="material-icons right">send</i>
+                </button>
+            </div>
+        </form>
+    </div>
 {% endblock %}
 
 {% block extra %}
     {% if venda_obj %}
-        <form action="{% url 'new-order-item' venda_obj.id %}" method="POST">
-            {% csrf_token %}
-            {{ form_item|bootstrap }}
-            <button class="btn btn-info">Incluir</button>
-        </form>
-        <h2>Listagem de itens</h2>
-        <table class="table">
+        <div class="row">
+            <form action="{% url 'new-order-item' venda_obj.id %}" method="POST" class="col s12">
+                {% csrf_token %}
+                <div class="row">
+                    {% for field in form_item %}
+                        <div class="input-field col s4">
+                            {{ field }}
+                            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="row center">
+                    <button class="btn waves-effect waves-light" type="submit" name="action">Cadastrar
+                    <i class="material-icons right">send</i>
+                </button>
+                </div>
+            </form>
+        </div>
+        <div style="border-bottom: 1px solid rgba(0,0,0,0.14); height: 90px">
+            <div class="container">
+                <div class="nav-wrapper">
+                    <div class="row">
+                        <div class="col s12 m10 offset-m1 center">
+                            <h2 style="color: #ee6e73; font-weight: 300; margin-top: 13px">
+                                Listagem de itens
+                            </h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <table class="responsive-table centered">
             <thead>
                 <tr>
                     <th scope="col">ID</th>
@@ -51,22 +92,48 @@
     {% endif %}
 {% endblock %}
 
-{% block content %}
-    <script type="text/javascript">
-        function deleteOrder(order, item) {
-            let conf = confirm('Deseja deletar o item: ' + item);
-            if (conf) {
-                ajaxDeleteOrder(order)
-            }
+{% block modals %}
+    <div id="modal1" class="modal">
+        <div class="modal-content" style="padding: 0">
+            <div style="background: #EE6E73; color: #ffffff; padding: 24px; text-align: center">
+                <h4 style="margin: 0;">Atenção</h4>
+            </div>
+            <div style="padding: 24px">
+                <h5>Tem certeza que deseja deletar o item: <span id="modal-span"></span>?</h5>
+                <time>Essa operação não poderá ser desfeita</time>
+            </div>
+            <input type="hidden" id="id_order_input">
+        </div>
+        <div class="modal-footer" style="height: auto">
+            <a href="#" class="modal-close waves-effect waves-teal btn-large" style="background: grey">
+                Cancelar<i class="material-icons right">cancel</i>
+            </a>
+            <a onclick="jqueryRedirect()"
+               class="waves-effect waves-yellow btn-large" style="background: #F44336">
+                Apagar<i class="material-icons right">delete</i>
+            </a>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        M.AutoInit();
+        function deleteOrder(sale, item) {
+            $('#modal-span').text(item);
+            $('#id_order_input').val(sale);
+            $('#modal1').modal('open');
         }
-        function ajaxDeleteOrder(order) {
+        function jqueryRedirect() {
             let django_url = 'http://localhost:8000/vendas/deletar-order';
+            let order = $('#id_order_input').val();
             let complete_url = django_url + '/' + order;
             $.ajax({
                 url: complete_url,
                 type: 'GET',
                 success: function () {
                     location.reload();
+                    $('#modal1').modal('close');
                 }
             });
         }
