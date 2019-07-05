@@ -1,0 +1,22 @@
+{% extends 'base_new.html' %}
+{% load materializecss %}
+{% block title_page %}
+    Cadastro de Produto
+{% endblock %}
+{% block main %}
+<form action="" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form|materializecss }}
+
+    <div class="row center">
+        <button class="btn waves-effect waves-light" type="submit" name="action">
+            {% if update %}
+                Atualizar
+            {% else %}
+                Cadastrar
+            {% endif %}
+            <i class="material-icons right">send</i>
+        </button>
+    </div>
+</form>
+{% endblock %}
