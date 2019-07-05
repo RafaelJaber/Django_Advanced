@@ -9,7 +9,9 @@ from .views import (
     EditSale,
     DeleteSale,
     DeleteOrder,
-    EditOrder
+    EditOrder,
+    api,
+    ViewApi
 )
 
 urlpatterns = [
@@ -22,4 +24,6 @@ urlpatterns = [
     path('edit-order/<int:sale>/<int:order>', EditOrder.as_view(), name="edit-order-modal"),
     path('dashboard/', DashboardView.as_view(), name="dashboard"),
     path('dashboard-graph/', JsonView.as_view(), name="dashboard-graph"),
+    path('api/', api, name="api"),
+    path('api-view/', ViewApi.as_view(), name="api-view"),
 ]

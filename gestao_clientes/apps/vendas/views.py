@@ -1,10 +1,13 @@
 import json
+from django.http import JsonResponse
 from django.shortcuts import render, HttpResponse, get_object_or_404, redirect
 from django.template.loader import render_to_string
 from django.views.generic import View, ListView
 from .models import Sale, OrderItem
 from .forms import OrderItemForm, OrderForm
 from django.contrib import messages
+from gestao_clientes.apps.produtos.models import Product
+from django.forms import model_to_dict
 
 
 class ListSales(ListView):
@@ -188,3 +191,22 @@ class JsonView(View):
         }
         json_object = json.dumps(dict)
         return HttpResponse(json_object)
+
+
+def api(request):
+    l = []
+    produtos = Product.objects.all()
+    for produto in produtos:
+        l.append(model_to_dict(produto))
+    return JsonResponse(l, status=200, safe=False)
+
+
+class ViewApi(View):
+    def get(self, request):
+        data = {'nome': 'Rafael'}
+        produtos = Product.objects.all()
+        l = []
+        for produto in produtos:
+            l.append(model_to_dict(produto))
+
+        return JsonResponse(l, safe=False)
