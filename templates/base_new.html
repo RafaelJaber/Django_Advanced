@@ -7,6 +7,42 @@
     <link type="text/css" rel="stylesheet" href="{% static 'materialize/css/materialize.css' %}"  media="screen,projection"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Gestão Vendas</title>
+    <style>
+        .snackbar {
+            background: #424242;
+            width: 344px;
+            height: 48px;
+            position: fixed;
+            top: 100px;
+            right: -344px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+            transition-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
+            transition-duration: 225ms;
+            transition-property: right;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-radius: 7px;
+            animation-delay: 100ms;
+        }
+        .snackbar.active {
+            right: 16px;
+        }
+        .snackbar p {
+            color: #ffffff;
+            margin-left: 15px;
+            margin-top: 0;
+            margin-bottom: 0;
+            float: left;
+        }
+        .snackbar span {
+            margin-right: 8px;
+            margin-left: 8px;
+            text-transform: uppercase;
+            font-weight: 100;
+            color: #18ffff;
+        }
+    </style>
 </head>
 <body>
     <div class="navbar-fixed">
@@ -40,13 +76,26 @@
         {% block extra %}{% endblock %}
         {% block content %}{% endblock %}
     </div>
+
+    <div class="snackbar {% if messages %}active{% endif %}">
+        {% for message in messages %}
+            <p>{{ message }}</p>
+            <span>Ação</span>
+        {% endfor %}
+    </div>
 </body>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"
         integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
         crossorigin="anonymous"
 ></script>
 <script type="text/javascript" src="{% static 'materialize/js/materialize.min.js' %}"></script>
-
+<script>
+    $(document).ready(function() {
+        setTimeout(function() {
+            $('.snackbar').removeClass('active')
+        }, 3000);
+    });
+</script>
 {% block modals %}
 {% endblock %}
 {% block scripts %}

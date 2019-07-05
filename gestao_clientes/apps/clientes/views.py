@@ -12,6 +12,7 @@ from django.utils.decorators import method_decorator
 from gestao_clientes.apps.vendas.models import Sale
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 decorators = [login_required]
+from django.contrib import messages
 
 
 @login_required
@@ -137,6 +138,9 @@ class DeletePerson(View):
         person = get_object_or_404(Person, id=pk)
         if person:
             person.delete()
+            messages.success(
+                self.request, 'Cliente deletado'
+            )
         return redirect('persons_list')
 
 

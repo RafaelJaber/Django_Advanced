@@ -1,8 +1,10 @@
 import json
 from django.shortcuts import render, HttpResponse, get_object_or_404, redirect
+from django.template.loader import render_to_string
 from django.views.generic import View, ListView
 from .models import Sale, OrderItem
-from .forms import OrderItemForm
+from .forms import OrderItemForm, OrderForm
+from django.contrib import messages
 
 
 class ListSales(ListView):
@@ -17,7 +19,7 @@ class NewOrder(View):
 
     def post(self, request):
         data = {}
-        data['numero'] = int(request.POST['numero'])
+        data['numero'] = int(request.POST['numero'].replace(',', '.'))
         data['desconto'] = float(request.POST['desconto'].replace(',', '.'))
         data['venda'] = request.POST['venda_id']
 
@@ -47,18 +49,28 @@ class NewOrderItem(View):
 
     def post(self, request, sale):
         data = {}
-        item = OrderItem.objects.create(
-            product_id=request.POST['product_id'], quantities=request.POST['quantity'],
-            discount=request.POST['discount'], sale_id=sale
-        )
-        data['item'] = item
+
+        if OrderItem.objects.filter(product_id=request.POST['product_id'], sale_id=sale).exists():
+            item = get_object_or_404(OrderItem, product_id=request.POST['product_id'], sale_id=sale)
+            print(item)
+            item.quantities = item.quantities + 1
+            item.save()
+            data['item'] = item
+        else:
+            item = OrderItem.objects.create(
+                product_id=request.POST['product_id'], quantities=request.POST['quantity'],
+                discount=request.POST['discount'], sale_id=sale
+            )
+            data['item'] = item
         data['form_item'] = OrderItemForm()
         data['numero'] = item.sale.number
         data['desconto'] = item.sale.discount
         data['venda'] = item.sale.id
         data['venda_obj'] = item.sale
         data['itens'] = item.sale.orderitem_set.all()
-
+        messages.success(
+            self.request, 'Item adicionado'
+        )
         return render(
             request, 'vendas/new-order.html', data
         )
@@ -74,7 +86,6 @@ class EditSale(View):
         data['venda'] = sale.id
         data['venda_obj'] = sale
         data['itens'] = sale.orderitem_set.all()
-
         return render(
             request,  'vendas/new-order.html', data
         )
@@ -85,6 +96,9 @@ class DeleteSale(View):
         delete = get_object_or_404(Sale, id=sale)
         if delete:
             delete.delete()
+            messages.success(
+                request, 'Venda deletada'
+            )
         return redirect('list-sales')
 
 
@@ -93,7 +107,46 @@ class DeleteOrder(View):
         order = get_object_or_404(OrderItem, id=order)
         if order:
             order.delete()
+            messages.success(
+                request, 'Item Deletado'
+            )
         return redirect('new-order')
+
+
+class EditOrder(View):
+    def get(self, request, sale, order):
+
+        sale = get_object_or_404(Sale, id=sale)
+        data = {}
+        data['form_item'] = OrderItemForm()
+        data['numero'] = sale.number
+        data['desconto'] = float(sale.discount)
+        data['venda'] = sale.id
+        data['venda_obj'] = sale
+        data['itens'] = sale.orderitem_set.all()
+
+        edit = get_object_or_404(OrderItem, id=order)
+        data['itemName'] = edit.product.description
+        data['formItem'] = OrderForm(instance=edit)
+
+        data['csrf_token_value'] = request.COOKIES['csrftoken']
+        return HttpResponse(
+            render_to_string('vendas/order-edit.html', data)
+        )
+
+    def post(self, request, order, sale, *args, **kwargs):
+        quantity = request.POST['quantities']
+        discount = request.POST['discount']
+        item = get_object_or_404(OrderItem, id=order)
+        if item:
+            quantity = quantity.split('.')[0]
+            item.quantities = int(quantity.replace(',', '.'))
+            item.discount = float(discount.replace(',', '.'))
+            item.save()
+            messages.success(
+                self.request, 'Item atualizado'
+            )
+            return redirect('edit-order', sale)
 
 
 class DashboardView(View):

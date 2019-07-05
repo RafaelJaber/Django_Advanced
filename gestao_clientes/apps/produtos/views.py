@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
 from django.views.generic import View, ListView, CreateView, UpdateView
 from .models import Product
 from django.urls import reverse_lazy
-
+from django.contrib import messages
 """
 class ProductBulk(View):
 
@@ -35,6 +35,9 @@ class ProductDelete(View):
         product = get_object_or_404(Product, id=pk)
         if product:
             product.delete()
+            messages.success(
+                self.request, 'Produto deletado'
+            )
         return redirect('product_list')
 
 

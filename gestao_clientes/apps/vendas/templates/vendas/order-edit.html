@@ -1,0 +1,57 @@
+{% extends 'vendas/new-order.html' %}
+{% load materializecss %}
+
+{% block modal_template %}
+    <div id="modal2" class="modal">
+        <div class="modal-content" style="padding: 0">
+            <div style="background: #009688; color: #ffffff; padding: 24px; text-align: center">
+                <h4 style="margin: 0;">Edição item: {{ itemName }}</h4>
+            </div>
+            <div style="padding: 24px">
+                <div class="row">
+                    <form class="col s12" method="POST" id="form_edit_order">
+                        <div style='display:none'>
+                            <input type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token_value }}'/>
+                        </div>
+                        <div class="row">
+                            {{ formItem.quantities|materializecss:'m6' }}
+                            {{ formItem.discount|materializecss:'m6' }}
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <input type="hidden" id="id_order_input">
+        </div>
+        <div class="modal-footer" style="height: auto">
+            <a onclick="close_modal()" class="modal-close waves-effect waves-teal btn" style="background: grey">
+                Cancelar<i class="material-icons right">cancel</i>
+            </a>
+            <a onclick="submitForm()"
+               class="waves-effect waves-yellow btn" style="background: #009688">
+                Salvar<i class="material-icons right">save</i>
+            </a>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        M.AutoInit()
+        $(document).ready(function () {
+            let varModal = $('#modal2');
+            var instances = M.Modal.init(varModal, {
+                onCloseEnd: close_modal
+            });
+            varModal.modal('open')
+        });
+
+        var close_modal = function closeModal() {
+            window.history.back();
+        }
+
+        function submitForm() {
+            $('#form_edit_order').submit()
+        }
+
+    </script>
+{% endblock %}
