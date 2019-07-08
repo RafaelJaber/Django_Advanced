@@ -16,7 +16,6 @@ urlpatterns = [
     path('produtos/', include(produtos_urls)),
     path('vendas/', include(vendas_urls)),
     path('login/', auth_views.login, name='login'),
-    path('jet_api/', include('jet_django.urls')),
     path('jet/', include('jet.urls')),
     path('jet/dashboard/', include('jet.dashboard.urls', 'jet-dashboard')),
     path('admin/', admin.site.urls),

@@ -39,7 +39,7 @@ DEBUG_TOOLBAR_CONFIG = {
 ADMINS = [('Rafael', 'rafael.jaber@hotmail.com'),]
 
 # Application definition
-JET_CORS_HEADERS = False
+
 INSTALLED_APPS = [
     'jet_django',
     'jet.dashboard',
