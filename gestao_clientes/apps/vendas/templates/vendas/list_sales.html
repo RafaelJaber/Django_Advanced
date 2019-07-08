@@ -3,7 +3,7 @@
     Listagem de Vendas
 {% endblock %}
 {% block main %}
-    <table class="responsive-table centered">
+    <table class="responsive-table centered" id="table_data">
         <thead>
             <tr>
               <th scope="col">ID</th>
@@ -88,6 +88,7 @@
                 success: function () {
                     $('#modal1').modal('close');
                     location.reload();
+                    M.toast({html: 'Venda excluída'});
                 }
             });
         }
