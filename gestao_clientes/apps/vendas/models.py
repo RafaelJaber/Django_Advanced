@@ -50,6 +50,9 @@ class Sale(models.Model):
             ('ver_dash', 'Usuário que podem acessar a dashboard'),
         )
 
+    def get_raw_sales(self):
+        return Sale.objects.raw('SELECT * FROM vendas_sale')
+
 
 class OrderItem(models.Model):
 

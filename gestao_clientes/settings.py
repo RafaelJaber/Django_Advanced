@@ -41,7 +41,6 @@ ADMINS = [('Rafael', 'rafael.jaber@hotmail.com'),]
 # Application definition
 
 INSTALLED_APPS = [
-    'jet_django',
     'jet.dashboard',
     'jet',
     'django.contrib.admin',
