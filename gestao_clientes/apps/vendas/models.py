@@ -8,12 +8,25 @@ from .managers import SaleManager
 
 
 class Sale(models.Model):
+    OPEN = 'OP'
+    CLOSE = 'CL'
+    PROCESSING = 'PC'
+    UNKNOWN = 'UN'
+
+    STATUS = (
+        (OPEN, 'Aberta'),
+        (CLOSE, 'Fechada'),
+        (PROCESSING, 'Processando'),
+        (UNKNOWN, 'Desconhecido')
+    )
+
     number = models.CharField(max_length=7, verbose_name='Número')
     value = models.DecimalField(max_digits=5, decimal_places=2, verbose_name='Total R$', blank=True, null=True)
     discount = models.DecimalField(max_digits=5, decimal_places=2, verbose_name='Desconto R$', default=0)
     taxes = models.DecimalField(max_digits=5, decimal_places=2, verbose_name='Impostos R$', default=0)
     person = models.ForeignKey(Person, null=True, blank=True, on_delete=models.PROTECT, verbose_name='Cliente')
     nfe_issued = models.BooleanField(default=False, blank=True)
+    status = models.CharField(verbose_name='Status da Venda', choices=STATUS, default=UNKNOWN, max_length=2)
 
     objects = SaleManager()
 

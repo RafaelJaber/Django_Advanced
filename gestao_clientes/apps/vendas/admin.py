@@ -15,11 +15,11 @@ class SaleAdmin(admin.ModelAdmin):
     actions = [nfe_emitida, nfe_cancelada]
     #raw_id_fields = ('person', )
     autocomplete_fields = ['person']
-    list_display = ('number', 'discount', 'person', 'value', 'nfe_issued')
+    list_display = ('number', 'discount', 'person', 'value', 'nfe_issued', 'status')
     search_fields = ('number', 'person__first_name', 'person__doc__num_doc')
     fieldsets = (
         ('Dados Venda', {'fields': (
-            'number', ('value', 'discount', 'taxes'))
+            'number', ('value', 'discount', 'taxes', 'status'))
         }),
         ('Dados Complementáres', {
             'classes': ('',),
