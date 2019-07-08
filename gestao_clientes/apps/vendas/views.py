@@ -8,6 +8,10 @@ from .forms import OrderItemForm, OrderForm
 from django.contrib import messages
 from gestao_clientes.apps.produtos.models import Product
 from django.forms import model_to_dict
+import logging
+
+
+logger = logging.getLogger('django')
 
 
 class ListSales(ListView):
@@ -81,6 +85,7 @@ class NewOrderItem(View):
 
 class EditSale(View):
     def get(self, request, sale):
+        logger.debug('Acessaram a edição de vendas')
         sale = get_object_or_404(Sale, id=sale)
         data = {}
         data['form_item'] = OrderItemForm()
