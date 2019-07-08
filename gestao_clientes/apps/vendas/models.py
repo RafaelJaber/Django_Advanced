@@ -51,6 +51,9 @@ class OrderItem(models.Model):
     class Meta:
         verbose_name = 'Item do Pedido'
         verbose_name_plural = 'Itens do Pedido'
+        unique_together = (
+            ("sale", "product")
+        )
 
 
 @receiver(post_save, sender=OrderItem)
